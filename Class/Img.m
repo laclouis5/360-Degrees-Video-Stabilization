@@ -22,12 +22,12 @@ classdef Img < handle
         
         
         function getPts(obj)
-            obj.pts = detectSURFFeatures(rescale(rgb2gray(obj.img), 0.4), 'MetricThreshold', 1000, 'NumOctave', 4, 'NumScaleLevels', 3);
+            obj.pts = detectSURFFeatures(rescale(rgb2gray(obj.img), 0.3), 'MetricThreshold', 1000, 'NumOctave', 4, 'NumScaleLevels', 3);
         end
         
         
         function getFeatures(obj)
-           obj.features = extractFeatures(rescale(rgb2gray(obj.img), 0.4), obj.pts); 
+           obj.features = extractFeatures(rescale(rgb2gray(obj.img), 0.3), obj.pts); 
         end
         
         

@@ -35,25 +35,65 @@ classdef Vid < handle
             video.frames{video.nbImg + 1} = Img;
             video.nbImg = video.nbImg + 1;
         end
-                
         
-        function calcFeatures(video, samplingRate)
+        
+        function [i1, f1, i2, f2] = calcLimits1(video, step)
             
-            for i = 1:samplingRate:video.nbImg
+            nb = video.nbImg;
+            N = nb - 1;
+            nbMatch1 = floor(N/step);
+            nbMatch2 = N - step*nbMatch1;
+            
+            i1 = 1;
+            f1 = step*nbMatch1 + i1;
+            
+            i2 = f1 + 1;
+            f2 = nbMatch2 + f1;
+        end
                
+        
+        function [i1, f1, i2, f2] = calcLimits2(video, step)
+            
+            nb = video.nbImg;
+            N = nb - 1;
+            nbMatch1 = floor(N/step) - 1;
+            nbMatch2 = N - step*nbMatch1 - 1;
+            
+            i1 = 1;
+            f1 = step*nbMatch1 + i1;
+            
+            i2 = f1 + step;
+            f2 = nbMatch2 + f1;
+        end
+        
+        
+        function calcFeatures(video, step)
+            
+            [i1, f1, i2, f2] = video.calcLimits1(video, step);
+            
+            for i = i1:step:f1
+               
+                img = video.frames{i};
+                img.calcFeatures;
+            end
+            
+            for j = i2:1:f2
                 img = video.frames{i};
                 img.calcFeatures;
             end
         end
         
         
-        function getAngle(video, samplingRate)
+        function getAngle(video, step)
             
-            video.calcFeatures(samplingRate);
+            video.calcFeatures(step);
             
-            for i = 1:samplingRate:floor((video.nbImg - 1)/samplingRate)*samplingRate          
+            [i1, f1, i2, f2] = video.calcLimits2(video, step);
+            
+            for i = i1:step:f1
+                
                 frame1 = video.frames{i};
-                frame2 = video.frames{i + samplingRate};
+                frame2 = video.frames{i + step};
                 
                 pairs = matchFeatures(frame1.features, frame2.features);
                 
@@ -64,27 +104,42 @@ classdef Vid < handle
                 
                 S1 = tForm.T(2, 1);
                 S2 = tForm.T(1, 1);
-
-                for j = 0:samplingRate - 1
+        
+                angle = atan2(S1, S2)*180/pi;
+                
+                for j = 1:step
                     
-                    video.angles(j + i + 1) = atan2(S1, S2)*180/pi/samplingRate;
-                    video.sumAngle(j + i + 1) = video.sumAngle(j + i) + video.angles(j + i + 1);
+                    video.angle(i + j) = angle/step;
+                    video.sumAngle(i + j) = video.sumAngle(i + j - 1) + angle/step;
                 end
             end
             
-            for k = 0:mod(video.nbImg - 1, samplingRate) - 1
+            for i = i2:1:f2
                 
-                    i = video.nbImg - samplingRate + 1;
-                    
-                    video.angles(k + i + 1) = video.angles(i);
-                    video.sumAngle(k + i + 1) = video.sumAngle(k + i) + video.angles(k + i + 1);
+                frame1 = video.frames{i};
+                frame2 = video.frames{i + 1};
+                
+                pairs = matchFeatures(frame1.features, frame2.features);
+                
+                matched1 = frame1.pts(pairs(:, 1), :);
+                matched2 = frame2.pts(pairs(:, 2), :);
+                
+                [tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
+                
+                S1 = tForm.T(2, 1);
+                S2 = tForm.T(1, 1);
+        
+                angle = atan2(S1, S2)*180/pi;
+                             
+                video.angle(i + j) = angle;
+                video.sumAngle(i + j) = video.sumAngle(i + j - 1) + angle;
             end
         end
         
         
-        function corrAngle(video, samplingRate)
+        function corrAngle(video, step)
             
-            video.getAngle(samplingRate);
+            video.getAngle(step);
             
             for i = 2:video.nbImg
                 
@@ -102,10 +157,14 @@ classdef Vid < handle
         function showAngle(video)  
             
            figure, subplot(211), plot(video.angles);
-           title('instant angle (degrees)');
+           title('instant angle');
+           xlabel('frame number');
+           ylabel('angle in degree per frame');
            grid minor;
            subplot(212), plot(video.sumAngle);
-           title('angle evolution (degrees)');
+           title('angle evolution');
+           xlabel('frame number');
+           ylabel('angle in degree');
            grid minor;  
         end
         
