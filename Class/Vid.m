@@ -39,8 +39,7 @@ classdef Vid < handle
         
         function [i1, f1, i2, f2] = calcLimits1(video, step)
             
-            nb = video.nbImg;
-            N = nb - 1;
+            N = video.nbImg - 1;
             nbMatch1 = floor(N/step);
             nbMatch2 = N - step*nbMatch1;
             
@@ -53,9 +52,8 @@ classdef Vid < handle
                
         
         function [i1, f1, i2, f2] = calcLimits2(video, step)
-            
-            nb = video.nbImg;
-            N = nb - 1;
+
+            N = video.nbImg - 1;
             nbMatch1 = floor(N/step) - 1;
             nbMatch2 = N - step*nbMatch1 - 1;
             
@@ -69,7 +67,7 @@ classdef Vid < handle
         
         function calcFeatures(video, step)
             
-            [i1, f1, i2, f2] = video.calcLimits1(video, step);
+            [i1, f1, i2, f2] = video.calcLimits1(step);
             
             for i = i1:step:f1
                
@@ -77,9 +75,13 @@ classdef Vid < handle
                 img.calcFeatures;
             end
             
-            for j = i2:1:f2
-                img = video.frames{i};
-                img.calcFeatures;
+            if f2 >= i2
+                
+                for j = i2:1:f2
+                    
+                    img = video.frames{j};
+                    img.calcFeatures;
+                end
             end
         end
         
@@ -88,7 +90,7 @@ classdef Vid < handle
             
             video.calcFeatures(step);
             
-            [i1, f1, i2, f2] = video.calcLimits2(video, step);
+            [i1, f1, i2, f2] = video.calcLimits2(step);
             
             for i = i1:step:f1
                 
@@ -109,30 +111,32 @@ classdef Vid < handle
                 
                 for j = 1:step
                     
-                    video.angle(i + j) = angle/step;
+                    video.angles(i + j) = angle/step;
                     video.sumAngle(i + j) = video.sumAngle(i + j - 1) + angle/step;
                 end
             end
             
-            for i = i2:1:f2
-                
-                frame1 = video.frames{i};
-                frame2 = video.frames{i + 1};
-                
-                pairs = matchFeatures(frame1.features, frame2.features);
-                
-                matched1 = frame1.pts(pairs(:, 1), :);
-                matched2 = frame2.pts(pairs(:, 2), :);
-                
-                [tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
-                
-                S1 = tForm.T(2, 1);
-                S2 = tForm.T(1, 1);
-        
-                angle = atan2(S1, S2)*180/pi;
-                             
-                video.angle(i + j) = angle;
-                video.sumAngle(i + j) = video.sumAngle(i + j - 1) + angle;
+            if f2 >= i2
+                for k = i2:1:f2
+
+                    frame1 = video.frames{k};
+                    frame2 = video.frames{k + 1};
+
+                    pairs = matchFeatures(frame1.features, frame2.features);
+
+                    matched1 = frame1.pts(pairs(:, 1), :);
+                    matched2 = frame2.pts(pairs(:, 2), :);
+
+                    [tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
+
+                    S1 = tForm.T(2, 1);
+                    S2 = tForm.T(1, 1);
+
+                    angle = atan2(S1, S2)*180/pi;
+
+                    video.angles(k + 1) = angle;
+                    video.sumAngle(k + 1) = video.sumAngle(k) + angle;
+                end
             end
         end
         
