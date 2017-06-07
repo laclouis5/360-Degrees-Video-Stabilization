@@ -9,7 +9,7 @@ vidIn = VideoReader('/Users/laclouis5/Documents/Etudes/Enseirb-Matmeca/Stages/St
 vidOut = VideoWriter('Out.mp4', 'MPEG-4');
 videoSize = [540 960];
 
-step = 5;
+step = 1;
 
 %%
 while hasFrame(vidIn)
@@ -33,17 +33,3 @@ for i = 1:1:video.nbImg
 end
 
 close(vidOut);
-
-%% test
-step = 2;
-nb = 232;
-N = nb - 1;
-
-            nbMatch1 = floor(N/step);
-            nbMatch2 = N - step*nbMatch1;
-            
-            i1 = 1;
-            f1 = step*nbMatch1 + i1;
-            
-            i2 = f1 + 1;
-            f2 = nbMatch2 + f1;
