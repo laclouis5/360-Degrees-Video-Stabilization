@@ -96,18 +96,8 @@ classdef Vid < handle
                 
                 frame1 = video.frames{i};
                 frame2 = video.frames{i + step};
-                
-                pairs = matchFeatures(frame1.features, frame2.features);
-                
-                matched1 = frame1.pts(pairs(:, 1), :);
-                matched2 = frame2.pts(pairs(:, 2), :);
-                
-                [tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
-                
-                S1 = tForm.T(2, 1);
-                S2 = tForm.T(1, 1);
         
-                angle = atan2(S1, S2)*180/pi;
+                angle = getAngle(frame1, frame2);
                 
                 for j = 1:step
                     
@@ -122,17 +112,7 @@ classdef Vid < handle
                     frame1 = video.frames{k};
                     frame2 = video.frames{k + 1};
 
-                    pairs = matchFeatures(frame1.features, frame2.features);
-
-                    matched1 = frame1.pts(pairs(:, 1), :);
-                    matched2 = frame2.pts(pairs(:, 2), :);
-
-                    [tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
-
-                    S1 = tForm.T(2, 1);
-                    S2 = tForm.T(1, 1);
-
-                    angle = atan2(S1, S2)*180/pi;
+                    angle = getAngle(frame1, frame2);
 
                     video.angles(k + 1) = angle;
                     video.sumAngle(k + 1) = video.sumAngle(k) + angle;
