@@ -64,15 +64,7 @@ classdef Vid < handle
             video.nbImg = video.nbImg + 1;
         end
         
-        
-<<<<<<< HEAD
-        function calcFeatures(video, step)
-            
-            calcFeaturesInterp(video, step);
-        end
-        
-        function getAngle(video, step)
-=======
+
         function createFrameSc(video)
             
             for i = 1:1:video.nbImg
@@ -135,14 +127,10 @@ classdef Vid < handle
         
         
         function getAngle(video)
->>>>>>> master
             
             stp = video.step;
             video.calcFeatures;
             
-<<<<<<< HEAD
-            getAngleInterp(video, step);
-=======
             [i1, f1, i2, f2] = video.calcLimits2;
             
             for i = i1:stp:f1
@@ -171,14 +159,12 @@ classdef Vid < handle
                     video.sumAngle(k + 1) = video.sumAngle(k) + angle;
                 end
             end
->>>>>>> master
         end
         
         
         function corrAngle(video)
             
-            video.getAngle;
-            
+            video.getAngle;        
             
             for i = 1:video.nbImg
                 

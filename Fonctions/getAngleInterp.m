@@ -1,6 +1,6 @@
-function [ angle ] = getAngleInterp( video, step )
+function [ angle ] = getAngleInterp( video )
      
-    M = step + 2;
+    M = video.step + 2;
     
     for i = 1:M:video.nbImg - 1
                 
@@ -26,7 +26,7 @@ function [ angle ] = getAngleInterp( video, step )
             a = (video.angles(i + 1) - video.angles(i + 1 - M))/M;
             b = video.angles(i + 1) - a*(i + 1);
                 
-            for k = i - step:i
+            for k = i - video.step:i
                 
                 video.angles(k) = a*k + b;
                 video.sumAngle(k) = video.sumAngle(k - 1) + video.angles(k);
