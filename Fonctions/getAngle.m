@@ -1,4 +1,4 @@
-function [ angle ] = getAngle( frame1, frame2)
+function [ angle ] = getAngle( frame1, frame2 )
 
     pairs = matchFeatures(frame1.features, frame2.features);
 
@@ -12,4 +12,3 @@ function [ angle ] = getAngle( frame1, frame2)
 
     angle = atan2(S1, S2)*180/pi;
 end
-

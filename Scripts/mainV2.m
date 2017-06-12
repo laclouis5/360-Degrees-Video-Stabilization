@@ -3,16 +3,26 @@ clear
 close all
 clc
 
-%% Parameters
+%% Init
+path = 'Videos/IMG_6918.mov';
 videoSize = [540 960];
-step = 1;
+step = 4;
+sc = 4;
 
-%% Creation
-video = createVideo('/Users/laclouis5/Documents/Etudes/Enseirb-Matmeca/Stages/Stage_2A/Project/findRotationAndScale/Videos/IMG_6918.mov');
+%% Main
+tic
+video = Vid(path, step, sc, videoSize);
+toc
 
-%% Correction
-video.corrAngle(step);
+tic
+video.corrAngle;
+toc
+
 video.showAngle;
 
+% figure, plot(t), grid minor, xlabel('scale'), ylabel('time (s)'), title('Execution time');
+
 %% Save
-% saveVideo(video);
+tic
+video.saveVideo;
+toc
