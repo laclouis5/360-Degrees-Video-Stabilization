@@ -15,7 +15,7 @@ video = Vid(path, step, sc, videoSize);
 toc
 
 tic
-video.corrAngle;
+video.corrAngle('linear');
 toc
 
 video.showAngle;
