@@ -6,7 +6,7 @@ classdef Img < handle
         pts;
         features;     
     end
-   
+
     
     methods
         
@@ -17,17 +17,17 @@ classdef Img < handle
         
         
         function getDefinition(obj)
-            obj.definition = size(rgb2gray(obj.img));
+            obj.definition = size(obj.img);
         end
         
         
         function getPts(obj)
-            obj.pts = detectSURFFeatures(rescale(rgb2gray(obj.img), 0.3), 'MetricThreshold', 1000, 'NumOctave', 4, 'NumScaleLevels', 3);
+            obj.pts = detectSURFFeatures(obj.img);
         end
         
         
         function getFeatures(obj)
-           obj.features = extractFeatures(rescale(rgb2gray(obj.img), 0.3), obj.pts); 
+           obj.features = extractFeatures(obj.img, obj.pts); 
         end
         
         
