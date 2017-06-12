@@ -1,4 +1,4 @@
-function [ ] = saveVideo( video )
+function [ ] = saveVideo( video, videoSize )
 
     vidOut = VideoWriter('Out.mp4', 'MPEG-4');
     

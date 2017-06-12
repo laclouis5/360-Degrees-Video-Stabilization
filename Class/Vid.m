@@ -37,107 +37,16 @@ classdef Vid < handle
         end
         
         
-        function [i1, f1, i2, f2] = calcLimits1(video, step)
-            
-            N = video.nbImg - 1;
-            nbMatch1 = floor(N/step);
-            nbMatch2 = N - step*nbMatch1;
-            
-            i1 = 1;
-            f1 = step*nbMatch1 + i1;
-            
-            i2 = f1 + 1;
-            f2 = nbMatch2 + f1;
-        end
-               
-        
-        function [i1, f1, i2, f2] = calcLimits2(video, step)
-
-            N = video.nbImg - 1;
-            nbMatch1 = floor(N/step) - 1;
-            nbMatch2 = N - step*nbMatch1 - 1;
-            
-            i1 = 1;
-            f1 = step*nbMatch1 + i1;
-            
-            i2 = f1 + step;
-            f2 = nbMatch2 + f1;
-        end
-        
-        
         function calcFeatures(video, step)
             
-            [i1, f1, i2, f2] = video.calcLimits1(step);
-            
-            for i = i1:step:f1
-               
-                img = video.frames{i};
-                img.calcFeatures;
-            end
-            
-            if f2 >= i2
-                
-                for j = i2:1:f2
-                    
-                    img = video.frames{j};
-                    img.calcFeatures;
-                end
-            end
+            calcFeaturesInterp(video, step);
         end
-        
         
         function getAngle(video, step)
             
             video.calcFeatures(step);
             
-            [i1, f1, i2, f2] = video.calcLimits2(step);
-            
-            for i = i1:step:f1
-                
-                frame1 = video.frames{i};
-                frame2 = video.frames{i + step};
-                
-                pairs = matchFeatures(frame1.features, frame2.features);
-                
-                matched1 = frame1.pts(pairs(:, 1), :);
-                matched2 = frame2.pts(pairs(:, 2), :);
-                
-                [tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
-                
-                S1 = tForm.T(2, 1);
-                S2 = tForm.T(1, 1);
-        
-                angle = atan2(S1, S2)*180/pi;
-                
-                for j = 1:step
-                    
-                    video.angles(i + j) = angle/step;
-                    video.sumAngle(i + j) = video.sumAngle(i + j - 1) + angle/step;
-                end
-            end
-            
-            if f2 >= i2
-                for k = i2:1:f2
-
-                    frame1 = video.frames{k};
-                    frame2 = video.frames{k + 1};
-
-                    pairs = matchFeatures(frame1.features, frame2.features);
-
-                    matched1 = frame1.pts(pairs(:, 1), :);
-                    matched2 = frame2.pts(pairs(:, 2), :);
-
-                    [tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
-
-                    S1 = tForm.T(2, 1);
-                    S2 = tForm.T(1, 1);
-
-                    angle = atan2(S1, S2)*180/pi;
-
-                    video.angles(k + 1) = angle;
-                    video.sumAngle(k + 1) = video.sumAngle(k) + angle;
-                end
-            end
+            getAngleInterp(video, step);
         end
         
         

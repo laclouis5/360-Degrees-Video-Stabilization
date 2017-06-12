@@ -2,6 +2,8 @@ function [ angle ] = getAngleInterp( video, step )
      
     M = step + 2;
     
+    % nbPairs = floor(video.nbImg/(M + 1));
+    
     for i = 1:M:video.nbImg - 1
                 
         frame1 = video.frames{i};
@@ -29,11 +31,11 @@ function [ angle ] = getAngleInterp( video, step )
             for k = i - step:i
                 
                 video.angles(k) = a*k + b;
-                video.sumAngle(k) = video.sumAngle(k - 1) + video.angles(k);
+                video.sumAngle(k) = video.sumAngle(k) + video.angles(k);
             end
         end
         
-        video.sumAngle(i + 1) = video.sumAngle(i) + video.angles(i + 1);
+        video.sumAngle(i + 1) = video.sumAngle(i + 1) + video.angles(i + 1);
     end
     
     i1 = i + 1;
