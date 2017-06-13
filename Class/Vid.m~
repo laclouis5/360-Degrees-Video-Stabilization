@@ -147,10 +147,11 @@ classdef Vid < handle
                 
                 angle = video.sumAngle(i);
                 frame = video.frames{i}.img;
+                sz    = video.frames{i}.definition;
                 
                 tform = calcTformInv(angle);
                 
-                video.framesOut{i} = Img(cropImg(corRot(frame, tform), video.sizeOut));
+                video.framesOut{i} = Img(cropImg(corRot(frame, tform, sz), video.sizeOut));
             end
         end
         
@@ -175,8 +176,7 @@ classdef Vid < handle
         
         function showVideo(video)
             
-            for i = 1:video.nbImg  
-                
+            for i = 1:video.nbImg      
                 image = video.frames{i}.img;    
                 figure, imshow(image);    
                 colormap(gray);

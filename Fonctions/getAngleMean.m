@@ -13,7 +13,7 @@ function [ ] = getAngleMean( video )
 
         for j = 1:stp
 
-            video.angles(i + j) = angle/stp;
+            video.angles(i + j)   = angle/stp;
             video.sumAngle(i + j) = video.sumAngle(i + j - 1) + angle/stp;
         end
     end
@@ -26,7 +26,7 @@ function [ ] = getAngleMean( video )
 
             angle = getAngle(frame1, frame2);
 
-            video.angles(k + 1) = angle;
+            video.angles(k + 1)   = angle;
             video.sumAngle(k + 1) = video.sumAngle(k) + angle;
         end
     end

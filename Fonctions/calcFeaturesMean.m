@@ -6,6 +6,8 @@ function [ ] = calcFeaturesMean( video )
 
         img = video.framesSc{i};
         img.calcFeatures;
+        
+        video.nbFeat = video.nbFeat + 1;
     end
 
     if f2 >= i2
@@ -14,6 +16,8 @@ function [ ] = calcFeaturesMean( video )
 
             img = video.framesSc{j};
             img.calcFeatures;
+            
+            video.nbFeat = video.nbFeat + 1;
         end
     end
 end

@@ -1,7 +1,5 @@
-function [ imgS ] = corRot( imgE, tForm, CropSize )
+function [ imgS ] = corRot( imgE, tForm )
 
     imgS = imwarp(imgE, tForm);
-    imgS = cropImg(imgS, CropSize);
-
 end
 

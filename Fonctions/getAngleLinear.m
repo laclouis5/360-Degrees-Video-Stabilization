@@ -18,7 +18,7 @@ function [ ] = getAngleLinear( video )
                 
             for k = i - video.step:i
                 
-                video.angles(k) = a*k + b;
+                video.angles(k)   = a*k + b;
                 video.sumAngle(k) = video.sumAngle(k - 1) + video.angles(k);
             end
         end
@@ -37,7 +37,7 @@ function [ ] = getAngleLinear( video )
             
             angle = getAngle(frame1, frame2);
         
-            video.angles(j + 1) = angle;
+            video.angles(j + 1)   = angle;
             video.sumAngle(j + 1) = video.sumAngle(j) + angle;
         end
     end

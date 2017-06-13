@@ -9,6 +9,8 @@ function [ ] = calcFeaturesLinear( video )
         
         img1.calcFeatures;
         img2.calcFeatures;
+        
+        video.nbFeat = video.nbFeat + 2;
     end
     
     i1 = i + 1;
@@ -16,8 +18,11 @@ function [ ] = calcFeaturesLinear( video )
     if i1 < video.nbImg
         
         for j = i1 + 1:video.nbImg
+            
             img = video.framesSc{j};
             img.calcFeatures;
+            
+            video.nbFeat = video.nbFeat + 1;
         end
     end
 end

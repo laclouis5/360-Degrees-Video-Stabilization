@@ -1,8 +1,10 @@
 classdef Img < handle
     
     properties
-        img;
+        
         definition;
+        img;
+        
         pts;
         features;     
     end
