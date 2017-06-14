@@ -31,6 +31,7 @@ video2.corrAngle('mean');
 video3.corrAngle('mean');
 toc
 
+%%
 figure, video1.showAngle;
 hold on;
 video2.showAngle;
