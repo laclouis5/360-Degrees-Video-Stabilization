@@ -13,40 +13,33 @@ clc
 path      = 'Videos/IMG_6918.mov';
 videoSize = [540 960];
 
-sc    = 4;
-step1 = 10;
-step2 = 6;
-step3 = 1;
+sc   = 4;
+step = 5;
 
 %% Main
 tic
-video1 = Vid(path, step1, sc, videoSize);
-video2 = Vid(path, step2, sc, videoSize);
-video3 = Vid(path, step3, sc, videoSize);
+video1 = Vid(path, step, sc, videoSize);
 toc
 
 tic
-video1.corrAngle('linear');
-video2.corrAngle('mean');
-video3.corrAngle('mean');
+video1.corrAngle('mean');
 toc
 
-%%
+%% Show
 figure, video1.showAngle;
-hold on;
-video2.showAngle;
-video3.showAngle;
 grid minor;
-
 figure, video1.showSumAngle;
-hold on;
-video2.showSumAngle;
-video3.showSumAngle;
+grid minor;
+figure, video1.showTranslX;
+grid minor;
+figure, video1.showTranslY;
+grid minor;
+figure, video1.showSumTranslX;
+grid minor;
+figure, video1.showSumTranslY;
 grid minor;
 
 %% Save
 tic
 video1.saveVideo('Out1.mp4');
-video2.saveVideo('Out2.mp4');
-video3.saveVideo('Out3.mp4');
 toc

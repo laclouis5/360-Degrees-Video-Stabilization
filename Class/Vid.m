@@ -16,7 +16,11 @@ classdef Vid < handle
         framesOut;
         
         angles;
-        sumAngle;    
+        sumAngle;
+        translX;
+        translY;
+        sumTranslX;
+        sumTranslY;
     end
     
     
@@ -36,6 +40,10 @@ classdef Vid < handle
             obj.framesOut  = cell(0);
             obj.angles     = zeros(0);
             obj.sumAngle   = zeros(0);
+            obj.translX    = zeros(0);
+            obj.translY    = zeros(0);
+            obj.sumTranslX = zeros(0);
+            obj.sumTranslY = zeros(0);
             
             obj.createVideo(path);
         end
@@ -61,9 +69,13 @@ classdef Vid < handle
             
             if (video.nbImg == 0)
                 
-                video.definition  = Img.definition;
-                video.angles(1)   = 0;
-                video.sumAngle(1) = 0;
+                video.definition    = Img.definition;
+                video.angles(1)     = 0;
+                video.sumAngle(1)   = 0;
+                video.translX(1)    = 0;
+                video.translY(1)    = 0;
+                video.sumTranslX(1) = 0;
+                video.sumTranslY(1) = 0;
             end
             
             video.frames{video.nbImg + 1} = Img;
@@ -128,7 +140,7 @@ classdef Vid < handle
          
             video.calcFeatures(interpMode);
             
-            if strcmp(interpMode,'mean')
+            if strcmp(interpMode, 'mean')
                 
                 getAngleMean(video);
                 
@@ -170,6 +182,42 @@ classdef Vid < handle
            title('angle evolution');
            xlabel('frame number');
            ylabel('angle in degree');
+        end
+        
+        
+        function showTranslX(video)
+            
+            plot(video.translX);
+            title('translation on X axis');
+            xlabel('frame number');
+            ylabel('tranlation in pixels');
+        end
+        
+        
+        function showTranslY(video)
+            
+            plot(video.translY);
+            title('translation on Y axis');
+            xlabel('frame number');
+            ylabel('tranlation in pixels');
+        end
+        
+        
+        function showSumTranslX(video)
+            
+            plot(video.sumTranslX);
+            title('translation on X axis');
+            xlabel('frame number');
+            ylabel('tranlation in pixels');
+        end
+        
+        
+        function showSumTranslY(video)
+            
+            plot(video.sumTranslY);
+            title('translation on Y axis');
+            xlabel('frame number');
+            ylabel('tranlation in pixels');
         end
         
         

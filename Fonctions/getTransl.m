@@ -1,23 +1,12 @@
-function [ tx, ty ] = getTransl( img1, img2 )
+function [ tx, ty ] = getTransl( frame1, frame2 )
 
-image1 = rgb2gray(img1);
-image2 = rgb2gray(img2);
+    pairs = matchFeatures(frame1.features, frame2.features);
 
-% Interest point research and matching
-pts1 = detectSURFFeatures(image1);
-pts2 = detectSURFFeatures(image2);
+    matched1 = frame1.pts(pairs(:, 1), :);
+    matched2 = frame2.pts(pairs(:, 2), :);
 
-[feat1, valid1] = extractFeatures(image1, pts1);
-[feat2, valid2] = extractFeatures(image2, pts2);
+    [tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
 
-idxPairs = matchFeatures(feat1, feat2);
-
-matched1 = valid1(idxPairs(:, 1), :);
-matched2 = valid2(idxPairs(:, 2), :);
-
-[tForm] = estimateGeometricTransform(matched1, matched2, 'similarity');
-
-tx = tForm.T(3, 1);
-ty = tForm.T(3, 2);
-
+    tx = tForm.T(3, 1);
+    ty = tForm.T(3, 2);
 end
