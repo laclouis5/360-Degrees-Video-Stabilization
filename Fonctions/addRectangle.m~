@@ -1,0 +1,14 @@
+function [ ] = addRectangle( image, X, Y, width, height, color, border )
+
+    rectW = 1:width;
+    rectH = 1:height;
+    
+    for i = 1:1:3
+        
+        image(Y:Y + border, wid, i) = color(i);
+        image(Y + hImage - border:Y + hImage, rectW, i) = color(i);
+        image(rectH, X:X + border, i) = color(i);
+        image(rectH, X + wImage - border:X + wImage, i) = color(i);
+    end
+end
+
