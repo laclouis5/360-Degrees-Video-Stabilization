@@ -1,10 +1,13 @@
 function [ imageF ] = extractImage( image, X, Y, width, height )
     
     [~, w, p] = size(image);
+    imageF    = zeros(height, width, p);
+    rectH     = Y:Y + height - 1;
     
-    imageF = zeros(height, width, p);
-    
-    rectH = Y:Y + height - 1;
+    if X > w
+        
+        X = X - w;
+    end
     
     if X + width - 1 <= w
         
