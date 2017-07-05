@@ -8,7 +8,7 @@ image = imread(path);
 
 [hImage, wImage, dImage] = size(image);
 
-t = 2000;
+t = 1000;
 [x, y, z] = sphere(t);
 
 azimuth = 0;
@@ -33,21 +33,17 @@ d2 = hImage/pi;
 
 mask = (theta > theta1) & (theta < theta2) & (phi > phi1) & (phi < phi2);
 
-[row, col] = find(mask);
-limT1      = col(1);
-limT2      = col(end);
-limP1      = row(1);
-limP2      = row(end);
+Theta = theta.*mask;
+Phi = phi.*mask;
+R = r.*mask;
 
-Theta = theta(limP1:limP2, limT1:limT2);
-Phi   = phi(limP1:limP2, limT1:limT2);
-R     = r(limP1:limP2, limT1:limT2);
+[row, col] = find(R);
 
 [X, Y, Z] = sph2cart(Theta, Phi, R);
 
 H = surf(X, Y, Z);
-rotate(H, [1, 0, 0], 0, [0, 0, 0]); % x-axis
-rotate(H, [0, 1, 0], -90, [0, 0, 0]); % y-axis
+rotate(H, [0, 1, 0], 90, [0, 0, 0]);
+rotate(H, [0, 1, 0], 0, [0, 0, 0]);
 axis equal;
 
 X1 = H.XData;
@@ -55,29 +51,21 @@ Y1 = H.YData;
 Z1 = H.ZData;
 
 [AZ1, EL1, R1] = cart2sph(X1, Y1, Z1);
+[AZ3, EL3, R3] = cart2sph(X, Y, Z);
 
 AZ2 = floor(AZ1*d1 + wImage/2);
 EL2 = floor(EL1*d2 + hImage/2);
 
 hNewImage = limP2 - limP1 + 1;
-wNewImage = limT2 - limT1 + 1;
+wNewImage = limT2 - limT2 + 1;
 dNewImage = dImage;
 
 imageF = zeros(hNewImage, wNewImage, dImage);
 
 for i = 1:hNewImage
     for j = 1:wNewImage
-        
-        imageF(i, j, :) = image(EL2(i, j), AZ2(i, j), :);
-    end
-end
-
-for i = 1:hNewImage
-    for j = 1:wNewImage
-        
         image(EL2(i, j), AZ2(i, j), :) = [255 0 0];
     end
 end
 
-figure, imshow(image);   
-figure, imshow(uint8(imageF));
+figure, imshow(image);        
