@@ -1,13 +1,12 @@
-function [ x, y, z ] = horizontalLine( phi, rotation )
+function [ x, y, z, r, az, el ] = horizontalLine( phi, rotation )
 
     % parameters
-    r = 1;
+    R = 1;
     syms theta;
 
-    x = r.*cos(theta).*cos(phi);
-    y = r.*sin(theta).*cos(phi);
-    z = r.*sin(phi);
-    
+    x = R.*cos(theta).*cos(phi);
+    y = R.*sin(theta).*cos(phi);
+    z = R.*sin(phi);
     
     % rotation matrix
     a = rotation(1);
@@ -20,11 +19,22 @@ function [ x, y, z ] = horizontalLine( phi, rotation )
 
     rot = rot_z*rot_y*rot_x;
     
-    
     % extraction of x, y, and z functions
     xyz = rot*[x; y; z];
+    
+    x = xyz(1);
+    y = xyz(2);
+    z = xyz(3);
+    
+    r  = sqrt(x.*x + y.*y + z.*z);
+    az = asin(z./R);
+    el = atan(y./x);
 
-    x = symfun(xyz(1), theta);
-    y = symfun(xyz(2), theta);
-    z = symfun(xyz(3), theta);
+    x = symfun(x, theta);
+    y = symfun(y, theta);
+    z = symfun(z, theta);
+    
+    r  = symfun(r, theta);
+    az = symfun(az, theta);
+    el = symfun(el, theta);
 end

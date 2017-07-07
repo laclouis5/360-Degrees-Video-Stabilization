@@ -14,14 +14,18 @@ ratio = 4/3;
 angle = 60;
 
 az  = 0;
-el  = pi/4;
-rot = pi/4;
+el  = 0;
+rot = 0;
 
 %%
-[x, y, z] = getFrame([rot, el, az], angle, ratio);
-% [x, y, z] = verticalLine(0, [0, 0, 0]);
+[theta, phi] = getFrame([rot, el, az], angle, ratio);
 
 xlabel('X'), ylabel('Y'), zlabel('Z'), grid minor, axis equal;
 axis([-1 1 -1 1 -1 1]);
 [X, Y, Z] = sphere(100);
 surf(X, Y, Z, 'EdgeColor', 'none');
+
+
+
+%%
+figure, hold on;

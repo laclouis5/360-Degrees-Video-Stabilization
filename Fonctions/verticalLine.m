@@ -1,13 +1,12 @@
-function [ x, y, z ] = verticalLine( theta, rotation )
+function [ x, y, z, r, az, el ] = verticalLine( theta, rotation )
 
     % parameters
-    r = 1;
+    R = 1;
     syms phi
     
-    x = r.*cos(theta).*cos(phi);
-    y = r.*sin(theta).*cos(phi);
-    z = r.*sin(phi);
-    
+    x = R.*cos(theta).*cos(phi);
+    y = R.*sin(theta).*cos(phi);
+    z = R.*sin(phi);
     
     % rotation matrix
     a = rotation(1);
@@ -20,11 +19,22 @@ function [ x, y, z ] = verticalLine( theta, rotation )
 
     rot = rot_z*rot_y*rot_x;
     
-    
     % extraction of x, y, and z functions
     xyz = rot*[x; y; z];
+    
+    x = xyz(1);
+    y = xyz(2);
+    z = xyz(3);
+    
+    r  = sqrt(x.*x + y.*y + z.*z);
+    az = asin(z./R);
+    el = atan(y./x);
 
-    x = symfun(xyz(1), phi);
-    y = symfun(xyz(2), phi);
-    z = symfun(xyz(3), phi);
+    x = symfun(x, phi);
+    y = symfun(y, phi);
+    z = symfun(z, phi);
+    
+    r  = symfun(r, phi);
+    az = symfun(az, phi);
+    el = symfun(el, phi);
 end
