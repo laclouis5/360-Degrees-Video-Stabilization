@@ -15,7 +15,7 @@ classdef Img < handle
         function obj = Img(img)
             obj.img = img;
             obj.getDefinition;
-        end;
+        end
         
         
         function getDefinition(obj)
