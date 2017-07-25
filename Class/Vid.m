@@ -55,7 +55,7 @@ classdef Vid < handle
                 img   = Img(frame);
                 
                 obj.frames{count}  = img;
-                obj.framesSc{count} = Img(rgb2gray(frame));
+                obj.framesSc{count} = Img(imresize(rgb2gray(frame), scale));
                 
                 count = count + 1;
             end

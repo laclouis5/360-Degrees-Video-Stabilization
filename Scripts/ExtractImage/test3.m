@@ -3,7 +3,7 @@ close all
 clc
 
 %%
-path = '/Users/laclouis5/Downloads/Videos_thetaSC/R0010647_er.MP4';
+path = '/Users/laclouis5/Downloads/Videos_thetaSC/IMG_7276.MP4';
 video = VideoReader(path);
 
 vid1 = VideoWriter('/Users/laclouis5/Downloads/vid1', 'MPEG-4');
