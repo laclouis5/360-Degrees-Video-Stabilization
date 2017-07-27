@@ -27,8 +27,8 @@ end
 close(vid1);
 
 %%
-% imgC  = colorImage(image, x, y, z);
-% imgC  = colorImage(imgC, x1, y1, z1);
+% imgC = colorImage(image, x, y, z);
+% imgC = colorImage(imgC, x1, y1, z1);
 
 % figure, imshow(imgC);
 % figure, imshow(imgS);

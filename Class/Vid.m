@@ -21,43 +21,72 @@ classdef Vid < handle
     
     
     methods
-        
+
         function obj = Vid(path, step, scale, sizeOut)
             
-            vidIn = VideoReader(path);
-            
-            % set param
-            obj.definition = [vidIn.height vidIn.Width];
-            obj.ips        = vidIn.frameRate;
-            obj.nbImg      = vidIn.Duration*vidIn.frameRate;
-            obj.nbFeat     = 0;
-            obj.scale      = scale;
-            obj.step       = step;
-            obj.sizeOut    = sizeOut;
-            
-            % mem alloc
-            obj.frames     = cell(0);
-            obj.framesSc   = cell(0);
-            obj.framesOut  = cell(0);
-            obj.angles     = zeros(0);
-            obj.sumAngle   = zeros(0);
-            
-            % Initialisation
-            obj.angles(1)     = 0;
-            obj.sumAngle(1)   = 0;
-            
-            % Filling of attributes
-            count = 1;
-            
-            while hasFrame(vidIn)
+            if nargin == 1
                 
-                frame = readFrame(vidIn);
-                img   = Img(frame);
+                vidIn = VideoReader(path);
                 
-                obj.frames{count}  = img;
-                obj.framesSc{count} = Img(imresize(rgb2gray(frame), scale));
+                % set param
+                obj.definition = [vidIn.height vidIn.Width];
+                obj.ips        = vidIn.frameRate;
+                obj.nbImg      = vidIn.Duration*vidIn.frameRate;
                 
-                count = count + 1;
+                % mem alloc
+                obj.frames = cell(0);
+                
+                % Filling of attributes
+                count = 1;
+
+                while hasFrame(vidIn)
+
+                    frame = readFrame(vidIn);
+                    img   = Img(frame);
+
+                    obj.frames{count}  = img;
+
+                    count = count + 1;
+                end
+            end
+            
+            if nargin > 1
+                
+                vidIn = VideoReader(path);
+
+                % set param
+                obj.definition = [vidIn.height vidIn.Width];
+                obj.ips        = vidIn.frameRate;
+                obj.nbImg      = vidIn.Duration*vidIn.frameRate;
+                obj.nbFeat     = 0;
+                obj.scale      = scale;
+                obj.step       = step;
+                obj.sizeOut    = sizeOut;
+
+                % mem alloc
+                obj.frames    = cell(0);
+                obj.framesSc  = cell(0);
+                obj.framesOut = cell(0);
+                obj.angles    = zeros(0);
+                obj.sumAngle  = zeros(0);
+
+                % Initialisation
+                obj.angles(1)     = 0;
+                obj.sumAngle(1)   = 0;
+
+                % Filling of attributes
+                count = 1;
+
+                while hasFrame(vidIn)
+
+                    frame = readFrame(vidIn);
+                    img   = Img(frame);
+
+                    obj.frames{count}  = img;
+                    obj.framesSc{count} = Img(imresize(rgb2gray(frame), scale));
+
+                    count = count + 1;
+                end
             end
         end
         
