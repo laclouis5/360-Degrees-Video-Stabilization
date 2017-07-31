@@ -75,7 +75,7 @@ sumAngle2 = video1.sumAngle;
 vid  = VideoReader(path);
 vidF = VideoWriter('/Users/laclouis5/Downloads/vidF2', 'MPEG-4');
 
-[x, y, z] = getRectWindow(angle, ratio, def);
+[x, y, z] = getRectWindow(60, ratio, def);
 
 open(vidF);
 for i = 1:video1.nbImg
