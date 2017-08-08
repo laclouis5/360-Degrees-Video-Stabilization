@@ -24,7 +24,7 @@ function [ ] = getAngleMean( video )
                 video.angles(i + j) = video.angles(i + j - 1);
             end
             
-            video.sumAngle(i + j) = video.sumAngle(i + j - 1) + angle/stp;
+            % video.sumAngle(i + j) = video.sumAngle(i + j - 1) + angle/stp;
         end
     end
 
@@ -39,8 +39,16 @@ function [ ] = getAngleMean( video )
 
             video.angles(k + 1) = angle;
             
-            video.sumAngle(k + 1) = video.sumAngle(k) + angle;
+            % video.sumAngle(k + 1) = video.sumAngle(k) + angle;
         end
+    end
+    
+    % filtering
+    video.angles = medfilt1(video.angles, 5);
+    
+    for l = 2:1:video.nbImg
+        
+        video.sumAngle(l) = video.sumAngle(l - 1) + video.angles(l);
     end
 end
 

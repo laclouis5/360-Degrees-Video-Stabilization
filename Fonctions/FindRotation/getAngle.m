@@ -12,7 +12,7 @@ function [ angle, status ] = getAngle( frame1, frame2 )
         S1 = tForm.T(2, 1);
         S2 = tForm.T(1, 1);
 
-        angle = atan2(S1, S2)*180/pi;
+        angle = 1.13*atan2(S1, S2)*180/pi;
     end
     
     if (status == 1 || status == 2)

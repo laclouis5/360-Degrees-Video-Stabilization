@@ -10,7 +10,7 @@ close all
 clc
 
 %% Param
-path      = '/Users/laclouis5/Downloads/90deg_s.mp4';
+path      = '/Users/laclouis5/Downloads/videosTestRot/90deg_s.MP4';
 ratio     = 4/3;
 def       = 720;
 videoSize = [def, def*ratio];
@@ -71,3 +71,5 @@ figure, video1.showSumAngle;
 moy = mean(video1.angles(2:end));
 
 degPerSec = moy*video1.ips
+var = 30*var(video1.angles(2:end))
+eq_type = sqrt(var)
