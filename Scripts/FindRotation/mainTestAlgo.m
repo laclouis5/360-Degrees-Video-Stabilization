@@ -10,7 +10,7 @@ close all
 clc
 
 %% Param
-path      = '/Users/laclouis5/Downloads/videosTestRot/90deg_s.MP4';
+path      = '/Users/laclouis5/Downloads/ThetaSC_Work/videos_Test_Rot/60deg_s.mp4';
 ratio     = 4/3;
 def       = 720;
 videoSize = [def, def*ratio];
@@ -53,7 +53,7 @@ open(vidF);
 
 for i = 1:video1.nbImg
     
-    [X, Y, Z] = moveWindow(x, y, z, 0, 0, deg2rad(sumAngle1(i)) + pi/2);
+    [X, Y, Z] = moveWindow(x, y, z, 0, 0, deg2rad(sumAngle1(i)));
     [az, el]  = cart2sphPixel(mainVideo.definition(1), mainVideo.definition(2), X, Y, Z);
     
     frame = mainVideo.frames{i}.img;
@@ -68,8 +68,9 @@ close(vidF);
 figure, video1.showAngle;
 figure, video1.showSumAngle;
 
+%%
 moy = mean(video1.angles(2:end));
 
-degPerSec = moy*video1.ips
-var = 30*var(video1.angles(2:end))
-eq_type = sqrt(var)
+degPerSec = - moy*video1.ips
+var = 30*var(video1.angles(2:end));
+std_dev = sqrt(var)

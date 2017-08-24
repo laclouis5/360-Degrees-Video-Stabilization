@@ -44,7 +44,8 @@ function [ ] = getAngleMean( video )
     end
     
     % filtering
-    video.angles = medfilt1(video.angles, 5);
+    % video.angles = medfilt1(video.angles, 9);
+    video.angles = hampel(video.angles);
     
     for l = 2:1:video.nbImg
         

@@ -10,8 +10,8 @@ close all
 clc
 
 %% Param
-path      = '/Users/laclouis5/Downloads/Videos_thetaSC/IMG_7276.MP4';
-ratio     = 16/9;
+path      = '/Users/laclouis5/Downloads/ThetaSC_Work/Videos_thetaSC/IMG_7276.MP4';
+ratio     = 4/3;
 def       = 720;
 videoSize = [def, def*ratio];
 angle     = 120;
@@ -49,9 +49,10 @@ vidF = VideoWriter('/Users/laclouis5/Downloads/vidF', 'MPEG-4');
 [x, y, z] = getRectWindow(angle, ratio, def);
 
 open(vidF);
+
 for i = 1:video1.nbImg
     
-    [X, Y, Z] = moveWindow(x, y, z, 0, deg2rad(video1.sumAngle(i)), -pi/2);
+    [X, Y, Z] = moveWindow(x, y, z, 0, deg2rad(sumAngle1(i)), -pi/2);
     [az, el]  = cart2sphPixel(mainVideo.definition(1), mainVideo.definition(2), X, Y, Z);
     
     frame = mainVideo.frames{i}.img;
@@ -59,6 +60,7 @@ for i = 1:video1.nbImg
     
     writeVideo(vidF, img);
 end
+
 close(vidF);
 
 %%
@@ -71,7 +73,7 @@ sumAngle2 = video1.sumAngle;
 vid  = VideoReader(path);
 vidF = VideoWriter('/Users/laclouis5/Downloads/vidF2', 'MPEG-4');
 
-[x, y, z] = getRectWindow(60, ratio, def);
+[x, y, z] = getRectWindow(angle, ratio, def);
 
 open(vidF);
 for i = 1:video1.nbImg

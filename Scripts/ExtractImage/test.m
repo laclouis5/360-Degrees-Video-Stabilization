@@ -3,7 +3,7 @@ clear
 close all
 
 %%
-path  = '/Users/laclouis5/Downloads/Photos_ThetaSC/ESL_FLAT.JPG';
+path  = '/Users/laclouis5/Downloads/ThetaSC_Work/Photos_ThetaSC/ESL_FLAT.JPG';
 image = imread(path, 'jpeg');
 
 [hImage, wImage, dImage] = size(image);

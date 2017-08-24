@@ -152,16 +152,6 @@ classdef Vid < handle
         function corrAngle(video, interpMode)
             
             video.getAngle(interpMode);
-            
-            for i = 1:video.nbImg
-                
-                angle = video.sumAngle(i);
-                
-                frame = video.frames{i}.img;
-                tform = calcTformInv(angle);
-                
-                video.framesOut{i} = Img(cropImg(corRot(frame, tform), video.sizeOut));
-            end
         end
         
         
